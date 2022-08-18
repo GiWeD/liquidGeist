@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/utils/Address.sol";
 import "./interfaces/ILiGeistStrategy.sol";
 import "./interfaces/ILiGeist.sol";
 
-contract liGeistManager {
+contract LiGeistManager {
     using SafeERC20 for IERC20;
     using Address for address;
     using SafeMath for uint256;
@@ -31,7 +31,7 @@ contract liGeistManager {
         require(msg.sender == owner, "!auth");
         require(_amount > 0, "!>0");
         //lock immediately, transfer directly to strategy to skip an erc20 transfer
-        IERC20(geist).safeTransferFrom(msg.sender, address(this), _amount);
+        IERC20(geist).safeTransferFrom(msg.sender, strategy, _amount);
         ILiGeistStrategy(strategy).createLock(_amount);
         ILiGeist(liGeist).mint(msg.sender, _amount);       
     }
@@ -52,7 +52,7 @@ contract liGeistManager {
     function _deposit(uint256 _amount) internal {
         require(_amount > 0, "!>0");
         //lock immediately, transfer directly to strategy to skip an erc20 transfer
-        IERC20(geist).safeTransferFrom(msg.sender, address(this), _amount);
+        IERC20(geist).safeTransferFrom(msg.sender, strategy, _amount);
         ILiGeistStrategy(strategy).increaseAmount(_amount);
         ILiGeist(liGeist).mint(msg.sender, _amount);
     }

@@ -6,7 +6,7 @@ require("@nomiclabs/hardhat-etherscan");
 
 require("@nomiclabs/hardhat-web3");
 
-require("hardhat-gas-reporter");
+//require("hardhat-gas-reporter");
 
 module.exports = {
   // latest Solidity version

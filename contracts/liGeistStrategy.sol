@@ -13,6 +13,8 @@ import "./interfaces/ILockedGeist.sol";
 import "./interfaces/ILendingPool.sol"; // we use 1 interface for gToken and gFTM
 
 import "./interfaces/IUniswapRouter.sol";
+import "./interfaces/IMasterChef.sol";
+
 
 
 contract LiGeistStrategy is OwnableUpgradeable {
@@ -35,7 +37,7 @@ contract LiGeistStrategy is OwnableUpgradeable {
     address public gUSDC;
     address public USDC;
 
-    address public NATIVE;
+    address public constant NATIVE = address(0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83);
     address public tokenRewardForChef;
     address public liGeistChef;
     address public lpChef;
@@ -44,7 +46,7 @@ contract LiGeistStrategy is OwnableUpgradeable {
     address[] public geistRewards;  // gTokens
     address[] public geistRewardsUnderlying;    // underlying gTokens (gDAI -> DAI)
 
-    mapping(address => bool) isStrategy;
+    mapping(address => bool) public isStrategy;
 
     constructor() public {}
 
@@ -55,10 +57,15 @@ contract LiGeistStrategy is OwnableUpgradeable {
         lockedGeist = _lockedGeist;
 
         gFTM = _gFTM;
+        geistRewards.push(gFTM);
+        geistRewardsUnderlying.push(NATIVE);
         gftmGateway = _gftmGateway;
+        geistLendingPool = address(0x9FAD24f572045c7869117160A571B2e50b10d068);
 
         gUSDC = _gUSDC;
         USDC = _USDC;
+        geistRewards.push(gUSDC);
+        geistRewardsUnderlying.push(USDC);
         tokenRewardForChef = _gUSDC;
 
         incentiveForLP = true;
@@ -66,7 +73,7 @@ contract LiGeistStrategy is OwnableUpgradeable {
     }
 
     modifier restricted {
-        require(msg.sender == owner() || msg.sender == lockedGeist, "Auth failed");
+        require(msg.sender == owner() || msg.sender == liGeistManager, "Auth failed");
         _;
     }
 
@@ -95,7 +102,7 @@ contract LiGeistStrategy is OwnableUpgradeable {
 
     function withdrawaExpiredLocksTo(address _to) external onlyOwner {
         uint256 _balBefore = IERC20Upgradeable(geist).balanceOf(address(this));
-        ILockedGeist(geist).withdrawExpiredLocks();
+        ILockedGeist(lockedGeist).withdrawExpiredLocks();
 
         uint256 _balAfter = IERC20Upgradeable(geist).balanceOf(address(this));
         require(_balAfter > _balBefore, "withdraw = 0");
@@ -105,7 +112,7 @@ contract LiGeistStrategy is OwnableUpgradeable {
 
     function withdrawAndRelock() external onlyOwner{
         uint256 _balBefore = IERC20Upgradeable(geist).balanceOf(address(this));
-        ILockedGeist(geist).withdrawExpiredLocks();
+        ILockedGeist(lockedGeist).withdrawExpiredLocks();
         
         uint256 _newBalToLock = IERC20Upgradeable(geist).balanceOf(address(this));
         require(_newBalToLock > _balBefore, "withdraw = 0");
@@ -118,7 +125,6 @@ contract LiGeistStrategy is OwnableUpgradeable {
 
     // claim geist reward, convert everything to USDC
     function claimRewards() external onlyOwnerOrStrategy {
-
         
         uint256 i = 0;
         uint256 _balanceTemp;
@@ -131,24 +137,38 @@ contract LiGeistStrategy is OwnableUpgradeable {
         for(i; i < geistRewards.length; i++){
             // check if we have gFTM
             _balanceTemp = IERC20Upgradeable(geistRewards[i]).balanceOf(address(this));
-            if(geistRewards[i] == gFTM){
+
+            if(geistRewards[i] == gFTM && _balanceTemp > 1e18){
+                IERC20Upgradeable(gFTM).safeApprove(gftmGateway, 0);
+                IERC20Upgradeable(gFTM).safeApprove(gftmGateway, uint256(-1));
                 ILendingPool(gftmGateway).withdrawETH(geistLendingPool, _balanceTemp, address(this));
+
+                _balanceUnderlying = address(this).balance;
+                path[1] = USDC;
+                path[0] = NATIVE;
+                IUniswapRouter(router).swapExactETHForTokens{value: _balanceUnderlying}(0, path, address(this), block.timestamp);
+
             } 
-            
-            else if (geistRewards[i] != gUSDC) {
-                ILendingPool(geistLendingPool).withdraw(geistRewards[i], _balanceTemp, address(this));
+            else if (geistRewards[i] != gFTM && geistRewards[i] != gUSDC && _balanceTemp > 0) {
+
+                IERC20Upgradeable(geistRewards[i] ).safeApprove(geistLendingPool, 0);
+                IERC20Upgradeable(geistRewards[i] ).safeApprove(geistLendingPool, _balanceTemp);
+                ILendingPool(geistLendingPool).withdraw(geistRewardsUnderlying[i], _balanceTemp, address(this));
+
+                path[0] = geistRewardsUnderlying[i];
+                path[1] = NATIVE;
+                _balanceUnderlying = IERC20Upgradeable(geistRewardsUnderlying[i]).balanceOf(address(this));
+
+                IERC20Upgradeable(path[0]).safeApprove(router, 0);
+                IERC20Upgradeable(path[0]).safeApprove(router, _balanceUnderlying);
+                IUniswapRouter(router).swapExactTokensForTokens(_balanceUnderlying, 0, path, address(this), block.timestamp);
             }
+
             else {
                 //we give away gUSDC
             }
             
-            path[0] = geistRewardsUnderlying[i];
-            path[1] = NATIVE;
-            _balanceUnderlying = IERC20Upgradeable(geistRewardsUnderlying[i]).balanceOf(address(this));
-
-            IERC20Upgradeable(path[0]).safeApprove(router, 0);
-            IERC20Upgradeable(path[0]).safeApprove(router, _balanceUnderlying);
-            IUniswapRouter(router).swapExactTokensForTokens(_balanceUnderlying, 0, path, address(this), block.timestamp);
+            
             // SWAP rewards to WFTM
 
         }
@@ -157,7 +177,6 @@ contract LiGeistStrategy is OwnableUpgradeable {
         path[0] = NATIVE;
         path[1] = USDC;
         _balanceTemp = IERC20Upgradeable(NATIVE).balanceOf(address(this));
-
         IERC20Upgradeable(path[0]).safeApprove(router, 0);
         IERC20Upgradeable(path[0]).safeApprove(router, _balanceTemp);
         IUniswapRouter(router).swapExactTokensForTokens(_balanceTemp,0, path, address(this), block.timestamp);
@@ -171,14 +190,19 @@ contract LiGeistStrategy is OwnableUpgradeable {
 
         _balanceTemp = IERC20Upgradeable(tokenRewardForChef).balanceOf(address(this));
         uint256 feeAmount = _balanceTemp.mul(fee).div(1000);
-        IERC20Upgradeable(tokenRewardForChef).safeTransfer(liGeistChef, _balanceTemp.sub(feeAmount));
+        uint256 _liGeistStakersBalance = _balanceTemp.sub(feeAmount);
+        IERC20Upgradeable(tokenRewardForChef).safeTransfer(liGeistChef, _liGeistStakersBalance);
 
 
+        // if lp incentive send feeAmount to chef, else to treasury. Update chef distro time given the bool
         if(incentiveForLP){
             IERC20Upgradeable(tokenRewardForChef).safeTransfer(lpChef, feeAmount);
+            IMasterChef(liGeistChef).setDistributionRate(_liGeistStakersBalance.add(feeAmount));
         } else {
             IERC20Upgradeable(tokenRewardForChef).safeTransfer(treasury, feeAmount);
+            IMasterChef(liGeistChef).setDistributionRate(_liGeistStakersBalance);
         }
+        
 
     }
 
@@ -187,18 +211,33 @@ contract LiGeistStrategy is OwnableUpgradeable {
         SETTERS
     */
 
+    function setGeistLeningPool(address _address) external onlyOwner{
+        geistLendingPool = _address;
+    }
+
     function setIncentiveLp(bool _set) external onlyOwner {
         require(_set != incentiveForLP, 'already set');
         incentiveForLP = _set;
     }
-    
+
+    function setTreasury(address _address) external onlyOwner{
+        treasury = _address;
+    }
     function setFee(uint256 _fee) external onlyOwner {
-        require(_fee > 0 && _fee <= 1000, 'check fee');
+        require(_fee <= 1000, 'nax fee');
         require(fee != _fee, 'same fee');
         fee = _fee;
 
     }
+    function setRouter(address _router) external onlyOwner {
+        require(_router != address(0), "addr zero");
+        router = _router;
+    }
 
+    function setLPChef(address _lpChef) external onlyOwner {
+        require(_lpChef != address(0), "addr zero");
+        lpChef = _lpChef;
+    }
 
     function setLiGeistChef(address _liGeistChef) external onlyOwner {
         require(_liGeistChef != address(0), "addr zero");
@@ -206,14 +245,17 @@ contract LiGeistStrategy is OwnableUpgradeable {
     }
 
     function setManager(address _manager) external onlyOwner {
+        require(_manager != address(0), "addr zero");
         liGeistManager = _manager;
     }
 
     function whitelistStrategy(address _strategy) external onlyOwner {
+        require(_strategy != address(0), "addr zero");
         isStrategy[_strategy] = true;
     }
 
     function blacklistStrategy(address _strategy) external onlyOwner {
+        require(_strategy != address(0), "addr zero");
         isStrategy[_strategy] = false;
     }
 
@@ -269,17 +311,27 @@ contract LiGeistStrategy is OwnableUpgradeable {
 
     }
 
+    function rewardTokenLen() external view returns(uint256){
+        return geistRewards.length;
+    }
+
     /*
         VIEW
     */
 
     function lockedBalances() view external returns (uint256 total, uint256 unlockable, uint256 locked, ILockedGeist.LockedBalance[] memory lockData) {
-        (total, unlockable, locked, lockData) = ILockedGeist(geist).lockedBalances(address(this));
+        (total, unlockable, locked, lockData) = ILockedGeist(lockedGeist).lockedBalances(address(this));
     }
 
+    /*function setDelegate(address _delegateContract, address _delegate) external onlyOwner{
+        IDelegation(_delegateContract).setDelegate("spiritswap.eth", _delegate);
+    }
 
+    function clearDelegate(address _delegateContract) external onlyOwner {
+        IDelegation(_delegateContract).clearDelegate("spiritswap.eth");
+    }*/
 
-    function execute(address to, uint256 value, bytes calldata data) external restricted returns(bool, bytes memory)  {
+    function execute(address to, uint256 value, bytes calldata data) external onlyOwnerOrStrategy returns(bool, bytes memory)  {
         (bool success, bytes memory result) = to.call{value: value}(data);
 
         return (success, result);

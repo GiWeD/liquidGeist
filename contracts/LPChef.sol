@@ -12,7 +12,7 @@ import "./interfaces/IMasterChef.sol";
 import "./interfaces/ISecondRewarder.sol";
 
 
-contract LiGEISTChef is OwnableUpgradeable {
+contract LPChef is OwnableUpgradeable {
     using SafeMath for uint256;
     using BoringMath128 for uint128;
     using BoringERC20 for IERC20;
@@ -29,8 +29,8 @@ contract LiGEISTChef is OwnableUpgradeable {
         uint256 allocPoint;
     }
 
-    /// @notice Address of GEIST contract.
-    IERC20 public GEIST;
+    /// @notice Address of rewardToken contract.
+    IERC20 public rewardToken;
 
     /// @notice Info of each MCV2 pool.
     PoolInfo[] public poolInfo;
@@ -43,7 +43,7 @@ contract LiGEISTChef is OwnableUpgradeable {
     uint256 public totalAllocPoint;
 
     uint256 public rewardPerSecond;
-    uint256 private ACC_GEIST_PRECISION;
+    uint256 private ACC_rewardToken_PRECISION;
 
     // Deposit Fee Address
     address public feeAddress;
@@ -73,11 +73,11 @@ contract LiGEISTChef is OwnableUpgradeable {
 
     constructor() public {}
 
-    function initialize(IERC20 _GEIST) public initializer {
+    function initialize(IERC20 _rewardToken) public initializer {
         __Ownable_init();
-        GEIST = _GEIST;
+        rewardToken = _rewardToken;
         distributePeriod = 604800;
-        ACC_GEIST_PRECISION = 1e12;
+        ACC_rewardToken_PRECISION = 1e12;
     }
 
     function setFeeAddress(address _feeAddress) public {
@@ -103,7 +103,7 @@ contract LiGEISTChef is OwnableUpgradeable {
         emit LogPoolAddition(lpToken.length.sub(1), allocPoint, _lpToken, _rewarder);
     }
 
-    /// @notice Update the given pool's GEIST allocation point and `IRewarder` contract. Can only be called
+    /// @notice Update the given pool's rewardToken allocation point and `IRewarder` contract. Can only be called
     /// by the owner.
     /// @param _pid The index of the pool. See `poolInfo`.
     /// @param _allocPoint New AP of the pool.
@@ -133,12 +133,12 @@ contract LiGEISTChef is OwnableUpgradeable {
 
     /// @notice Sets the reward per second to be distributed. Can only be called by the owner.
     /// @param _rewardPerSecond The amount of Reward to be distributed per second.
-    function setRewardPerSecond(uint256 _rewardPerSecond) public onlyOwner {
+    function setRewardPerSecond(uint256 _rewardPerSecond) public ownerOrExternal {
         rewardPerSecond = _rewardPerSecond;
         emit LogRewardPerSecond(_rewardPerSecond);
     }
 
-    function setDistributionRate(uint256 amount) public ownerOrExternal  {
+    function setDistributionRate(uint256 amount) public onlyOwner {
         uint256 notDistributed;
         if (lastDistributedTime > 0 && block.timestamp < lastDistributedTime) {
             uint256 timeLeft = lastDistributedTime.sub(block.timestamp);
@@ -148,16 +148,15 @@ contract LiGEISTChef is OwnableUpgradeable {
         amount = amount.add(notDistributed);
         uint256 _rewardPerSecond = amount.div(distributePeriod);
         rewardPerSecond = _rewardPerSecond;
-        
         lastDistributedTime = block.timestamp.add(distributePeriod);
         massUpdatePools();
         emit LogRewardPerSecond(_rewardPerSecond);
     }
 
-    /// @notice View function to see pending GEIST on frontend.
+    /// @notice View function to see pending rewardToken on frontend.
     /// @param _pid The index of the pool. See `poolInfo`.
     /// @param _user Address of user.
-    /// @return pending GEIST reward for a given user.
+    /// @return pending rewardToken reward for a given user.
     function pendingReward(uint256 _pid, address _user) external view returns (uint256 pending) {
         PoolInfo memory pool = poolInfo[_pid];
         UserInfo storage user = userInfo[_pid][_user];
@@ -166,9 +165,9 @@ contract LiGEISTChef is OwnableUpgradeable {
         if (block.timestamp > pool.lastRewardTime && lpSupply != 0) {
             uint256 time = block.timestamp.sub(pool.lastRewardTime);
             uint256 reward = time.mul(rewardPerSecond).mul(pool.allocPoint) / totalAllocPoint;
-            accRewardPerShare = accRewardPerShare.add(reward.mul(ACC_GEIST_PRECISION) / lpSupply);
+            accRewardPerShare = accRewardPerShare.add(reward.mul(ACC_rewardToken_PRECISION) / lpSupply);
         }
-        pending = int256(user.amount.mul(accRewardPerShare) / ACC_GEIST_PRECISION).sub(user.rewardDebt).toUInt256();
+        pending = int256(user.amount.mul(accRewardPerShare) / ACC_rewardToken_PRECISION).sub(user.rewardDebt).toUInt256();
     }
 
     /// @notice Update reward variables of the given pool.
@@ -181,7 +180,7 @@ contract LiGEISTChef is OwnableUpgradeable {
             if (lpSupply > 0) {
                 uint256 time = block.timestamp.sub(pool.lastRewardTime);
                 uint256 reward = time.mul(rewardPerSecond).mul(pool.allocPoint) / totalAllocPoint;
-                pool.accRewardPerShare = pool.accRewardPerShare.add(reward.mul(ACC_GEIST_PRECISION).div(lpSupply));
+                pool.accRewardPerShare = pool.accRewardPerShare.add(reward.mul(ACC_rewardToken_PRECISION).div(lpSupply));
             }
             pool.lastRewardTime = block.timestamp;
             poolInfo[pid] = pool;
@@ -189,7 +188,7 @@ contract LiGEISTChef is OwnableUpgradeable {
         }
     }
 
-    /// @notice Deposit LP tokens to MCV2 for GEIST allocation.
+    /// @notice Deposit LP tokens to MCV2 for rewardToken allocation.
     /// @param pid The index of the pool. See `poolInfo`.
     /// @param amount LP token amount to deposit.
     /// @param to The receiver of `amount` deposit benefit.
@@ -203,7 +202,7 @@ contract LiGEISTChef is OwnableUpgradeable {
 
         // Effects
         user.amount = user.amount.add(amount);
-        user.rewardDebt = user.rewardDebt.add(int256(amount.mul(pool.accRewardPerShare) / ACC_GEIST_PRECISION));
+        user.rewardDebt = user.rewardDebt.add(int256(amount.mul(pool.accRewardPerShare) / ACC_rewardToken_PRECISION));
 
         ISecondRewarder _rewarder = rewarder[pid];
         if (address(_rewarder) != address(0)) {
@@ -228,7 +227,7 @@ contract LiGEISTChef is OwnableUpgradeable {
         UserInfo storage user = userInfo[pid][msg.sender];
 
         // Effects
-        user.rewardDebt = user.rewardDebt.sub(int256(amount.mul(pool.accRewardPerShare) / ACC_GEIST_PRECISION));
+        user.rewardDebt = user.rewardDebt.sub(int256(amount.mul(pool.accRewardPerShare) / ACC_rewardToken_PRECISION));
         user.amount = user.amount.sub(amount);
 
         ISecondRewarder _rewarder = rewarder[pid];
@@ -243,11 +242,11 @@ contract LiGEISTChef is OwnableUpgradeable {
 
     /// @notice Harvest proceeds for transaction sender to `to`.
     /// @param pid The index of the pool. See `poolInfo`.
-    /// @param to Receiver of GEIST rewards.
+    /// @param to Receiver of rewardToken rewards.
     function harvest(uint256 pid, address to) public {
         PoolInfo memory pool = updatePool(pid);
         UserInfo storage user = userInfo[pid][msg.sender];
-        int256 accumulatedReward = int256(user.amount.mul(pool.accRewardPerShare) / ACC_GEIST_PRECISION);
+        int256 accumulatedReward = int256(user.amount.mul(pool.accRewardPerShare) / ACC_rewardToken_PRECISION);
         uint256 _pendingReward = accumulatedReward.sub(user.rewardDebt).toUInt256();
 
         // Effects
@@ -255,7 +254,7 @@ contract LiGEISTChef is OwnableUpgradeable {
 
         // Interactions
         if (_pendingReward != 0) {
-            GEIST.safeTransfer(to, _pendingReward);
+            rewardToken.safeTransfer(to, _pendingReward);
         }
 
         ISecondRewarder _rewarder = rewarder[pid];
@@ -275,7 +274,7 @@ contract LiGEISTChef is OwnableUpgradeable {
     /// @notice Withdraw LP tokens from MCV2 and harvest proceeds for transaction sender to `to`.
     /// @param pid The index of the pool. See `poolInfo`.
     /// @param amount LP token amount to withdraw.
-    /// @param to Receiver of the LP tokens and GEIST rewards.
+    /// @param to Receiver of the LP tokens and rewardToken rewards.
     function withdrawAndHarvest(
         uint256 pid,
         uint256 amount,
@@ -283,15 +282,15 @@ contract LiGEISTChef is OwnableUpgradeable {
     ) public {
         PoolInfo memory pool = updatePool(pid);
         UserInfo storage user = userInfo[pid][msg.sender];
-        int256 accumulatedReward = int256(user.amount.mul(pool.accRewardPerShare) / ACC_GEIST_PRECISION);
+        int256 accumulatedReward = int256(user.amount.mul(pool.accRewardPerShare) / ACC_rewardToken_PRECISION);
         uint256 _pendingReward = accumulatedReward.sub(user.rewardDebt).toUInt256();
 
         // Effects
-        user.rewardDebt = accumulatedReward.sub(int256(amount.mul(pool.accRewardPerShare) / ACC_GEIST_PRECISION));
+        user.rewardDebt = accumulatedReward.sub(int256(amount.mul(pool.accRewardPerShare) / ACC_rewardToken_PRECISION));
         user.amount = user.amount.sub(amount);
 
         // Interactions
-        GEIST.safeTransfer(to, _pendingReward);
+        rewardToken.safeTransfer(to, _pendingReward);
 
         ISecondRewarder _rewarder = rewarder[pid];
         if (address(_rewarder) != address(0)) {
