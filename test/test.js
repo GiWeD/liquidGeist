@@ -32,40 +32,27 @@ const spookyrouter = ethers.utils.getAddress("0xF491e7B69E4244ad4002BC14e878a342
 
 const tokenRewards = [
     gFTM,
-    
     gUSDC,
-    
     ethers.utils.getAddress("0x940f41f0ec9ba1a34cf001cc03347ac092f5f6b5"),
-    
     ethers.utils.getAddress("0x07e6332dd090d287d3489245038daf987955dcfb"),
-    
     ethers.utils.getAddress("0x25c130b2624cf12a4ea30143ef50c5d68cefa22f"),
-    
-    ethers.utils.getAddress("0x38aca5484b8603373acc6961ecd57a6a594510a3"),
-    
-    
-    ethers.utils.getAddress("0x690754a168b022331caa2467207c61919b3f8a98"),
-    
-    ethers.utils.getAddress("0xc664fc7b8487a3e10824cda768c1d239f2403bbe")
+    ethers.utils.getAddress("0x38aca5484b8603373acc6961ecd57a6a594510a3"),    
+    ethers.utils.getAddress("0x690754a168b022331caa2467207c61919b3f8a98"),    
+    ethers.utils.getAddress("0xc664fc7b8487a3e10824cda768c1d239f2403bbe"),
+    geist
 ]
 
 const underlyingToken = [
 
     ethers.utils.getAddress("0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83"),
-    
     USDC,
-    
     ethers.utils.getAddress("0x049d68029688eAbF473097a2fC38ef61633A3C7A"),
-    
     ethers.utils.getAddress("0x8D11eC38a3EB5E956B052f67Da8Bdc9bef8Abf3E"),
-    
     ethers.utils.getAddress("0x74b23882a30290451A17c44f4F05243b6b58C76d"),
-    
-    ethers.utils.getAddress("0x321162Cd933E2Be498Cd2267a90534A804051b11"),
-    
-    ethers.utils.getAddress("0x1E4F97b9f9F913c46F1632781732927B9019C68b"),
-    
-    ethers.utils.getAddress("0x82f0B8B456c1A451378467398982d4834b6829c1")
+    ethers.utils.getAddress("0x321162Cd933E2Be498Cd2267a90534A804051b11"),    
+    ethers.utils.getAddress("0x1E4F97b9f9F913c46F1632781732927B9019C68b"),    
+    ethers.utils.getAddress("0x82f0B8B456c1A451378467398982d4834b6829c1"),
+    geist
 ]
 
 describe("LiGeist TEST UNIT", function () {
@@ -74,6 +61,7 @@ describe("LiGeist TEST UNIT", function () {
         
         await ethers.provider.send('evm_increaseTime', [1]);
         await ethers.provider.send('evm_mine');
+   
     });
     
     it("Prepare contracts", async function () {
@@ -285,6 +273,7 @@ describe("LiGeist TEST UNIT", function () {
 
     it("Should get rewards after 1 week", async function () {
         
+        this.timeout(100000)
         await ethers.provider.send('evm_increaseTime', [86400*7]);
         await ethers.provider.send('evm_mine');
         len = await ligeiststrategyContract.rewardTokenLen()
@@ -364,7 +353,7 @@ describe("LiGeist TEST UNIT", function () {
     });
 
     it("Should get rewards", async function () {
-        
+        this.timeout(100000)
         await ethers.provider.send('evm_increaseTime', [86400*7]);
         await ethers.provider.send('evm_mine');
         len = await ligeiststrategyContract.rewardTokenLen()
@@ -375,12 +364,12 @@ describe("LiGeist TEST UNIT", function () {
         }*/
         
         
-        console.log('chef bal bef: ',(await gUSDCContract.balanceOf(ligeistChefContract.address)).toString())
+        //console.log('chef bal bef: ',(await gUSDCContract.balanceOf(ligeistChefContract.address)).toString())
 
         await ligeiststrategyContract.claimRewards()
 
-        console.log('chef bal aft: ',(await gUSDCContract.balanceOf(ligeistChefContract.address)).toString())
-        console.log('chef rew / s: ',(await ligeistChefContract.rewardPerSecond()).toString() ) 
+        //console.log('chef bal aft: ',(await gUSDCContract.balanceOf(ligeistChefContract.address)).toString())
+        //console.log('chef rew / s: ',(await ligeistChefContract.rewardPerSecond()).toString() ) 
     });
 
 

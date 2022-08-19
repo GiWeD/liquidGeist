@@ -2,19 +2,19 @@
   "manifestVersion": "3.2",
   "admin": {
     "address": "0xBEc49fA140aCaA83533fB00A2BB19bDdd0290f25",
-    "txHash": "0x4157d8a6bf8eb876f620958cc1542ebc684bd63f582745e098c72b80baafb09e",
+    "txHash": "0xecb62adf31ddd90f490ad1f296f2f8d0e418b3ae15163d0d615efc1e79fc565f",
     "deployTransaction": {
-      "hash": "0x4157d8a6bf8eb876f620958cc1542ebc684bd63f582745e098c72b80baafb09e",
+      "hash": "0xecb62adf31ddd90f490ad1f296f2f8d0e418b3ae15163d0d615efc1e79fc565f",
       "type": 2,
       "accessList": [],
-      "blockHash": "0x95c694ead757460392fa67ca0ae9dff164d13da0546e54132028ba405e950de8",
-      "blockNumber": 45132214,
+      "blockHash": "0x433f9f6252a8509c1b2419c896daf04a2697b22da6f1db1f7b59c4c7b68f3a05",
+      "blockNumber": 45185280,
       "transactionIndex": 0,
       "confirmations": 1,
       "from": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
       "gasPrice": {
         "type": "BigNumber",
-        "hex": "0x6acca9d1"
+        "hex": "0x7d8e5271"
       },
       "maxPriorityFeePerGas": {
         "type": "BigNumber",
@@ -22,7 +22,7 @@
       },
       "maxFeePerGas": {
         "type": "BigNumber",
-        "hex": "0x99fe89a2"
+        "hex": "0xbf81dae2"
       },
       "gasLimit": {
         "type": "BigNumber",
@@ -35,8 +35,8 @@
       },
       "nonce": 82,
       "data": "0x608060405234801561001057600080fd5b50600080546001600160a01b031916339081178255604051909182917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0908290a350610759806100616000396000f3fe60806040526004361061007b5760003560e01c80639623609d1161004e5780639623609d1461011157806399a88ec414610124578063f2fde38b14610144578063f3b7dead146101645761007b565b8063204e1c7a14610080578063715018a6146100bc5780637eff275e146100d35780638da5cb5b146100f3575b600080fd5b34801561008c57600080fd5b506100a061009b366004610515565b610184565b6040516001600160a01b03909116815260200160405180910390f35b3480156100c857600080fd5b506100d1610215565b005b3480156100df57600080fd5b506100d16100ee366004610554565b610292565b3480156100ff57600080fd5b506000546001600160a01b03166100a0565b6100d161011f36600461058c565b61031c565b34801561013057600080fd5b506100d161013f366004610554565b6103ad565b34801561015057600080fd5b506100d161015f366004610515565b610405565b34801561017057600080fd5b506100a061017f366004610515565b6104ef565b6000806000836001600160a01b03166040516101aa90635c60da1b60e01b815260040190565b600060405180830381855afa9150503d80600081146101e5576040519150601f19603f3d011682016040523d82523d6000602084013e6101ea565b606091505b5091509150816101f957600080fd5b8080602001905181019061020d9190610538565b949350505050565b6000546001600160a01b031633146102485760405162461bcd60e51b815260040161023f906106c0565b60405180910390fd5b600080546040516001600160a01b03909116907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0908390a3600080546001600160a01b0319169055565b6000546001600160a01b031633146102bc5760405162461bcd60e51b815260040161023f906106c0565b6040516308f2839760e41b81526001600160a01b038281166004830152831690638f283970906024015b600060405180830381600087803b15801561030057600080fd5b505af1158015610314573d6000803e3d6000fd5b505050505050565b6000546001600160a01b031633146103465760405162461bcd60e51b815260040161023f906106c0565b60405163278f794360e11b81526001600160a01b03841690634f1ef286903490610376908690869060040161065d565b6000604051808303818588803b15801561038f57600080fd5b505af11580156103a3573d6000803e3d6000fd5b5050505050505050565b6000546001600160a01b031633146103d75760405162461bcd60e51b815260040161023f906106c0565b604051631b2ce7f360e11b81526001600160a01b038281166004830152831690633659cfe6906024016102e6565b6000546001600160a01b0316331461042f5760405162461bcd60e51b815260040161023f906106c0565b6001600160a01b0381166104945760405162461bcd60e51b815260206004820152602660248201527f4f776e61626c653a206e6577206f776e657220697320746865207a65726f206160448201526564647265737360d01b606482015260840161023f565b600080546040516001600160a01b03808516939216917f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e091a3600080546001600160a01b0319166001600160a01b0392909216919091179055565b6000806000836001600160a01b03166040516101aa906303e1469160e61b815260040190565b600060208284031215610526578081fd5b81356105318161070b565b9392505050565b600060208284031215610549578081fd5b81516105318161070b565b60008060408385031215610566578081fd5b82356105718161070b565b915060208301356105818161070b565b809150509250929050565b6000806000606084860312156105a0578081fd5b83356105ab8161070b565b925060208401356105bb8161070b565b9150604084013567ffffffffffffffff808211156105d7578283fd5b818601915086601f8301126105ea578283fd5b8135818111156105fc576105fc6106f5565b604051601f8201601f19908116603f01168101908382118183101715610624576106246106f5565b8160405282815289602084870101111561063c578586fd5b82602086016020830137856020848301015280955050505050509250925092565b600060018060a01b038416825260206040818401528351806040850152825b818110156106985785810183015185820160600152820161067c565b818111156106a95783606083870101525b50601f01601f191692909201606001949350505050565b6020808252818101527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e6572604082015260600190565b634e487b7160e01b600052604160045260246000fd5b6001600160a01b038116811461072057600080fd5b5056fea2646970667358221220d849f96f3086b9f82cdcf665adb8c697ace05638da1c7c16ab2d26293717af6764736f6c63430008020033",
-      "r": "0x696f9486445240c8d42feb33f012d99f7b7c9f2d6053079b8eb5353cb719d5a7",
-      "s": "0x7ab64bd3baa0dd7e205537734f1733c17281dc866e6de08ef6094e29855f68e6",
+      "r": "0xbacef78fd789e9c31695b458036e85df140e8d9d9124bd1f806af6f4a544c1a1",
+      "s": "0x535cef3dcf7852d19a87085a97f1cb34ebae750f8cdc9f894f036b80b775646e",
       "v": 1,
       "creates": "0xBEc49fA140aCaA83533fB00A2BB19bDdd0290f25",
       "chainId": 31337
@@ -45,19 +45,19 @@
   "proxies": [
     {
       "address": "0xD84379CEae14AA33C123Af12424A37803F885889",
-      "txHash": "0x4a2c73f13d074a61a2a06840a8b0bb2a6347208bba8bbc28e9b5db72147d48da",
+      "txHash": "0x903b30a1d8d1cdee95adc2c532dfedbc4a07150d87d2219f515e37c34a2ebeec",
       "kind": "transparent"
     },
     {
       "address": "0xfbC22278A96299D91d41C453234d97b4F5Eb9B2d",
-      "txHash": "0xd8ca5919641b37e842cc24b1e63109e23b7b87bd4d31556e43487aa0da3a1c50",
+      "txHash": "0xb12cb734be33bc51b53015cf43a0e6a9caaa8f273f8e072c7f3c45e862a71776",
       "kind": "transparent"
     }
   ],
   "impls": {
-    "8fbc7959dee2cf44eca88ccfe855246b1759e7eef5bed6e9f6324abc04574024": {
+    "d2c9197507e008e3b72b7f789866b21acc54db3aea87a3a081c10662db5f5d3a": {
       "address": "0x4EE6eCAD1c2Dae9f525404De8555724e3c35d07B",
-      "txHash": "0xe46719d3f58306bcf693df03a0ac268cd8914915e46fdced112c804e27ab0143",
+      "txHash": "0x92b7577793e9d67b107c21c0cf31af908bdfd41fe2ff7cc22aa8a8551df16e73",
       "layout": {
         "storage": [
           {
@@ -94,83 +94,83 @@
             "contract": "LiGEISTChef",
             "label": "GEIST",
             "type": "t_contract(IERC20)66",
-            "src": "contracts\\LiGeistChef.sol:36"
+            "src": "contracts\\LiGeistChef.sol:33"
           },
           {
             "contract": "LiGEISTChef",
             "label": "poolInfo",
-            "type": "t_array(t_struct(PoolInfo)5249_storage)dyn_storage",
-            "src": "contracts\\LiGeistChef.sol:39"
+            "type": "t_array(t_struct(PoolInfo)5248_storage)dyn_storage",
+            "src": "contracts\\LiGeistChef.sol:36"
           },
           {
             "contract": "LiGEISTChef",
             "label": "lpToken",
             "type": "t_array(t_contract(IERC20)66)dyn_storage",
-            "src": "contracts\\LiGeistChef.sol:41"
+            "src": "contracts\\LiGeistChef.sol:38"
           },
           {
             "contract": "LiGEISTChef",
             "label": "userInfo",
-            "type": "t_mapping(t_uint256,t_mapping(t_address,t_struct(UserInfo)5242_storage))",
-            "src": "contracts\\LiGeistChef.sol:44"
+            "type": "t_mapping(t_uint256,t_mapping(t_address,t_struct(UserInfo)5241_storage))",
+            "src": "contracts\\LiGeistChef.sol:41"
           },
           {
             "contract": "LiGEISTChef",
             "label": "totalAllocPoint",
             "type": "t_uint256",
-            "src": "contracts\\LiGeistChef.sol:46"
+            "src": "contracts\\LiGeistChef.sol:43"
           },
           {
             "contract": "LiGEISTChef",
             "label": "rewardPerSecond",
             "type": "t_uint256",
-            "src": "contracts\\LiGeistChef.sol:48"
+            "src": "contracts\\LiGeistChef.sol:45"
           },
           {
             "contract": "LiGEISTChef",
             "label": "ACC_GEIST_PRECISION",
             "type": "t_uint256",
-            "src": "contracts\\LiGeistChef.sol:49"
+            "src": "contracts\\LiGeistChef.sol:46"
           },
           {
             "contract": "LiGEISTChef",
             "label": "feeAddress",
             "type": "t_address",
-            "src": "contracts\\LiGeistChef.sol:52"
+            "src": "contracts\\LiGeistChef.sol:49"
           },
           {
             "contract": "LiGEISTChef",
             "label": "distributePeriod",
             "type": "t_uint256",
-            "src": "contracts\\LiGeistChef.sol:54"
+            "src": "contracts\\LiGeistChef.sol:51"
           },
           {
             "contract": "LiGEISTChef",
             "label": "lastDistributedTime",
             "type": "t_uint256",
-            "src": "contracts\\LiGeistChef.sol:55"
+            "src": "contracts\\LiGeistChef.sol:52"
           },
           {
             "contract": "LiGEISTChef",
             "label": "rewarder",
-            "type": "t_array(t_contract(ISecondRewarder)8143)dyn_storage",
-            "src": "contracts\\LiGeistChef.sol:58"
+            "type": "t_array(t_contract(ISecondRewarder)8296)dyn_storage",
+            "src": "contracts\\LiGeistChef.sol:55"
           },
           {
             "contract": "LiGEISTChef",
             "label": "externalAddr",
             "type": "t_mapping(t_address,t_bool)",
-            "src": "contracts\\LiGeistChef.sol:61"
+            "src": "contracts\\LiGeistChef.sol:58"
           }
         ],
         "types": {
           "t_contract(IERC20)66": {
             "label": "contract IERC20"
           },
-          "t_array(t_struct(PoolInfo)5249_storage)dyn_storage": {
+          "t_array(t_struct(PoolInfo)5248_storage)dyn_storage": {
             "label": "struct LiGEISTChef.PoolInfo[]"
           },
-          "t_struct(PoolInfo)5249_storage": {
+          "t_struct(PoolInfo)5248_storage": {
             "label": "struct LiGEISTChef.PoolInfo",
             "members": [
               {
@@ -193,16 +193,16 @@
           "t_array(t_contract(IERC20)66)dyn_storage": {
             "label": "contract IERC20[]"
           },
-          "t_mapping(t_uint256,t_mapping(t_address,t_struct(UserInfo)5242_storage))": {
+          "t_mapping(t_uint256,t_mapping(t_address,t_struct(UserInfo)5241_storage))": {
             "label": "mapping(uint256 => mapping(address => struct LiGEISTChef.UserInfo))"
           },
-          "t_mapping(t_address,t_struct(UserInfo)5242_storage)": {
+          "t_mapping(t_address,t_struct(UserInfo)5241_storage)": {
             "label": "mapping(address => struct LiGEISTChef.UserInfo)"
           },
           "t_address": {
             "label": "address"
           },
-          "t_struct(UserInfo)5242_storage": {
+          "t_struct(UserInfo)5241_storage": {
             "label": "struct LiGEISTChef.UserInfo",
             "members": [
               {
@@ -218,10 +218,10 @@
           "t_int256": {
             "label": "int256"
           },
-          "t_array(t_contract(ISecondRewarder)8143)dyn_storage": {
+          "t_array(t_contract(ISecondRewarder)8296)dyn_storage": {
             "label": "contract ISecondRewarder[]"
           },
-          "t_contract(ISecondRewarder)8143": {
+          "t_contract(ISecondRewarder)8296": {
             "label": "contract ISecondRewarder"
           },
           "t_mapping(t_address,t_bool)": {
@@ -239,9 +239,9 @@
         }
       }
     },
-    "e2b473c63f722e669efb3b6840b21cc73ce42bd1da748e9c6fe53fe1ccca396d": {
+    "4b72ec1bf96cfbf34e4126c700a01abc2c9d197e1a9751c6d19ac46d668a898e": {
       "address": "0x2B0d36FACD61B71CC05ab8F3D2355ec3631C0dd5",
-      "txHash": "0xb8186b5f71b767b050c0737c9d3185c5aa291e3f77e9b40562f3cc84fad12522",
+      "txHash": "0xdca33c0f8d74f0628b9f30a7f0ae2bdf61e5d6df2b99d33ced4f4479be4e4e94",
       "layout": {
         "storage": [
           {
@@ -278,115 +278,121 @@
             "contract": "LiGeistStrategy",
             "label": "incentiveForLP",
             "type": "t_bool",
-            "src": "contracts\\LiGeistStrategy.sol:24"
+            "src": "contracts\\LiGeistStrategy.sol:25"
           },
           {
             "contract": "LiGeistStrategy",
             "label": "fee",
             "type": "t_uint256",
-            "src": "contracts\\LiGeistStrategy.sol:26"
+            "src": "contracts\\LiGeistStrategy.sol:27"
+          },
+          {
+            "contract": "LiGeistStrategy",
+            "label": "lastClaimTime",
+            "type": "t_uint256",
+            "src": "contracts\\LiGeistStrategy.sol:28"
           },
           {
             "contract": "LiGeistStrategy",
             "label": "treasury",
             "type": "t_address",
-            "src": "contracts\\LiGeistStrategy.sol:27"
+            "src": "contracts\\LiGeistStrategy.sol:29"
           },
           {
             "contract": "LiGeistStrategy",
             "label": "lockedGeist",
             "type": "t_address",
-            "src": "contracts\\LiGeistStrategy.sol:29"
+            "src": "contracts\\LiGeistStrategy.sol:31"
           },
           {
             "contract": "LiGeistStrategy",
             "label": "geist",
             "type": "t_address",
-            "src": "contracts\\LiGeistStrategy.sol:30"
+            "src": "contracts\\LiGeistStrategy.sol:32"
           },
           {
             "contract": "LiGeistStrategy",
             "label": "liGeistManager",
             "type": "t_address",
-            "src": "contracts\\LiGeistStrategy.sol:31"
+            "src": "contracts\\LiGeistStrategy.sol:33"
           },
           {
             "contract": "LiGeistStrategy",
             "label": "gftmGateway",
             "type": "t_address",
-            "src": "contracts\\LiGeistStrategy.sol:32"
+            "src": "contracts\\LiGeistStrategy.sol:34"
           },
           {
             "contract": "LiGeistStrategy",
             "label": "geistLendingPool",
             "type": "t_address",
-            "src": "contracts\\LiGeistStrategy.sol:34"
+            "src": "contracts\\LiGeistStrategy.sol:36"
           },
           {
             "contract": "LiGeistStrategy",
             "label": "gestLendingWETH",
             "type": "t_address",
-            "src": "contracts\\LiGeistStrategy.sol:35"
+            "src": "contracts\\LiGeistStrategy.sol:37"
           },
           {
             "contract": "LiGeistStrategy",
             "label": "gFTM",
             "type": "t_address",
-            "src": "contracts\\LiGeistStrategy.sol:36"
+            "src": "contracts\\LiGeistStrategy.sol:38"
           },
           {
             "contract": "LiGeistStrategy",
             "label": "gUSDC",
             "type": "t_address",
-            "src": "contracts\\LiGeistStrategy.sol:37"
+            "src": "contracts\\LiGeistStrategy.sol:39"
           },
           {
             "contract": "LiGeistStrategy",
             "label": "USDC",
             "type": "t_address",
-            "src": "contracts\\LiGeistStrategy.sol:38"
+            "src": "contracts\\LiGeistStrategy.sol:40"
           },
           {
             "contract": "LiGeistStrategy",
             "label": "tokenRewardForChef",
             "type": "t_address",
-            "src": "contracts\\LiGeistStrategy.sol:41"
+            "src": "contracts\\LiGeistStrategy.sol:43"
           },
           {
             "contract": "LiGeistStrategy",
             "label": "liGeistChef",
             "type": "t_address",
-            "src": "contracts\\LiGeistStrategy.sol:42"
+            "src": "contracts\\LiGeistStrategy.sol:44"
           },
           {
             "contract": "LiGeistStrategy",
             "label": "lpChef",
             "type": "t_address",
-            "src": "contracts\\LiGeistStrategy.sol:43"
+            "src": "contracts\\LiGeistStrategy.sol:45"
           },
           {
             "contract": "LiGeistStrategy",
             "label": "router",
             "type": "t_address",
-            "src": "contracts\\LiGeistStrategy.sol:44"
+            "src": "contracts\\LiGeistStrategy.sol:46"
           },
           {
             "contract": "LiGeistStrategy",
             "label": "geistRewards",
             "type": "t_array(t_address)dyn_storage",
-            "src": "contracts\\LiGeistStrategy.sol:46"
+            "src": "contracts\\LiGeistStrategy.sol:48"
           },
           {
             "contract": "LiGeistStrategy",
             "label": "geistRewardsUnderlying",
             "type": "t_array(t_address)dyn_storage",
-            "src": "contracts\\LiGeistStrategy.sol:47"
+            "src": "contracts\\LiGeistStrategy.sol:49"
           },
           {
             "contract": "LiGeistStrategy",
             "label": "isStrategy",
             "type": "t_mapping(t_address,t_bool)",
-            "src": "contracts\\LiGeistStrategy.sol:49"
+            "src": "contracts\\LiGeistStrategy.sol:51"
           }
         ],
         "types": {
